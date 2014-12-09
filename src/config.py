@@ -29,17 +29,17 @@ participants = [
 monitor_page            = 'https://graph.facebook.com/profileid/feed'
 monitor_page_auth_param = '?access_token=authToken'
 auth_url                = 'https://graph.facebook.com/oauth/access_token?grant_type=client_credentials&client_id=app_id&client_secret=app_secret'
-auth_app_id             = '183618437422'
-auth_app_secret         = '07adc2e341d3f4963647500a4e749ed2'
-keyword_uc              = 'CASTELLO'
+auth_app_id             = 'app-id'
+auth_app_secret         = 'app-secret'
+keyword_uc              = 'CONTEST'
 
 mail_destination    = 'constestmail@com.pt'
 mail_subject        = 'CONTEST-NEXTWD3'
 mail_body           = """
 CONTEST SOMETHING
-Nome: name
-Nº BI: idNum
-telNumemóvel: telNum
+Name: name
+ID: idNum
+Contact: telNum
 User FB: fbProf
                     """
 
