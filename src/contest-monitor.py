@@ -122,7 +122,8 @@ if __name__ == "__main__":
         except Exception as e:
             excep = traceback.format_exception(*sys.exc_info())
             print_log('(Exception) : '+excep[1])
-            """send_mail(
+            #"""
+            send_mail(
                 config.error_mail,
                 config.error_mail,
                 'Exception '+config.keyword_uc,
@@ -130,8 +131,8 @@ if __name__ == "__main__":
                 config.error_mail_smtp_srv,
                 config.error_mail,
                 config.error_mail_smtp_pwd)
-            """
-            raise e
+            #"""
+            #raise e
             continue
 
     print_log("This should not have ended!")
