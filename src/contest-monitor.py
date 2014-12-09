@@ -66,7 +66,9 @@ def monitor_cycle(last_msg,url_authToken=None):
     json_object = requests.get(url_json_object);
 
     msg     = json_object.json()['data'][0]['message']
-    link    = json_object.json()['data'][0]['link']
+    link    = ''
+    if 'link' in json_object.json()['data'][0]:
+        link = json_object.json()['data'][0]['link']
 
     for participant in config.participants:
         if config.keyword_uc in msg.upper() and \
@@ -120,7 +122,7 @@ if __name__ == "__main__":
         except Exception as e:
             excep = traceback.format_exception(*sys.exc_info())
             print_log('(Exception) : '+excep[1])
-            send_mail(
+            """send_mail(
                 config.error_mail,
                 config.error_mail,
                 'Exception '+config.keyword_uc,
@@ -128,6 +130,8 @@ if __name__ == "__main__":
                 config.error_mail_smtp_srv,
                 config.error_mail,
                 config.error_mail_smtp_pwd)
+            """
+            raise e
             continue
 
     print_log("This should not have ended!")
