@@ -102,7 +102,7 @@ def monitor_cycle(last_msg,url_authToken=None):
                 participant['mail_smtp_pwd'])
             last_msg[participant['mail']] = msg
             print_log('Sent participation mail from '+participant['mail']+' to '+config.mail_destination)
-    time.sleep(randint(3, 7)*0.1)
+    time.sleep(randint(1, 3))
 #_______________________________________________________________________________
 
 if __name__ == "__main__":      
