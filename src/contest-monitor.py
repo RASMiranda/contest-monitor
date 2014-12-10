@@ -52,6 +52,46 @@ def sameMessage(last_msg, msg, mail):
             return True
     return False
 
+def participate(participant):
+    subject = config.mail_subject
+    if 'NEXTWD' in subject:
+        subject = subject[:-7]+get_nextwd(subject[-1:])
+    mail_body = config.mail_body\
+                    .replace('name', participant['name'])\
+                    .replace('idNum', participant['idNum'])\
+                    .replace('telNum', participant['telNum'])\
+                    .replace('fbProf', participant['fbProf'])
+    send_mail(
+        participant['mail'],
+        config.mail_destination,
+        subject,
+        mail_body,
+        participant['mail_smtp_srv'],
+        participant['mail'],
+        participant['mail_smtp_pwd'])
+    print_log('Sent participation mail from '+participant['mail']+' to '+config.mail_destination)
+    time.sleep(randint(1, 3)*0.5)
+    send_mail(
+        participant['mail'],
+        config.mail_destination,
+        subject,
+        mail_body,
+        participant['mail_smtp_srv'],
+        participant['mail'],
+        participant['mail_smtp_pwd'])
+    print_log('Sent participation mail from '+participant['mail']+' to '+config.mail_destination)
+    time.sleep(randint(1, 3)*0.5)
+    send_mail(
+        participant['mail'],
+        config.mail_destination,
+        subject,
+        mail_body,
+        participant['mail_smtp_srv'],
+        participant['mail'],
+        participant['mail_smtp_pwd'])
+    print_log('Sent participation mail from '+participant['mail']+' to '+config.mail_destination)
+
+
 def monitor_cycle(last_msg,url_authToken=None):
     #Retrieve auth token
     if url_authToken:
@@ -86,24 +126,8 @@ def monitor_cycle(last_msg,url_authToken=None):
             print_log('Sent winner mail to '+participant['mail'])
         if config.keyword_uc in msg.upper() and \
            not sameMessage(last_msg, msg, participant['mail']):
-            subject = config.mail_subject
-            if 'NEXTWD' in subject:
-                subject = subject[:-7]+get_nextwd(subject[-1:])
-            mail_body = config.mail_body\
-                            .replace('name', participant['name'])\
-                            .replace('idNum', participant['idNum'])\
-                            .replace('telNum', participant['telNum'])\
-                            .replace('fbProf', participant['fbProf'])
-            send_mail(
-                participant['mail'],
-                config.mail_destination,
-                subject,
-                mail_body,
-                participant['mail_smtp_srv'],
-                participant['mail'],
-                participant['mail_smtp_pwd'])
+            participate(participant)
             last_msg[participant['mail']] = msg
-            print_log('Sent participation mail from '+participant['mail']+' to '+config.mail_destination)
     time.sleep(randint(1, 3))
 #_______________________________________________________________________________
 
@@ -120,14 +144,16 @@ if __name__ == "__main__":
         try:
             monitor_cycle(last_msg,url_authToken)
         except Exception as e:
+            last_msg = None
             excep = traceback.format_exception(*sys.exc_info())
-            print_log('(Exception) : '+excep[1])
+            excep = '\n'.join(excep)
+            print_log('(Exception) : '+excep)
             #"""
             send_mail(
                 config.error_mail,
                 config.error_mail,
                 'Exception '+config.keyword_uc,
-                excep[1],
+                excep,
                 config.error_mail_smtp_srv,
                 config.error_mail,
                 config.error_mail_smtp_pwd)
