@@ -122,12 +122,11 @@ def monitor_cycle(last_msg,url_authToken=None):
                 participant['mail_smtp_srv'],
                 participant['mail'],
                 participant['mail_smtp_pwd'])
-            last_msg[participant['mail']] = msg
             print_log('Sent winner mail to '+participant['mail'])
         if config.keyword_uc in msg.upper() and \
            not sameMessage(last_msg, msg, participant['mail']):
             participate(participant)
-            last_msg[participant['mail']] = msg
+        last_msg[participant['mail']] = msg
     time.sleep(randint(1, 3))
 #_______________________________________________________________________________
 
