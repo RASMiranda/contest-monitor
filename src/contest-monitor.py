@@ -47,9 +47,10 @@ def print_log(log_msg):
     print('['+str(datetime.datetime.now())+'] : '+log_msg)
 
 def sameMessage(last_msg, msg, mail):
-    if mail in last_msg:
-        if last_msg[mail] == msg:
-            return True
+    if last_msg:
+        if mail in last_msg:
+            if last_msg[mail] == msg:
+                return True
     return False
 
 def participate(participant):
