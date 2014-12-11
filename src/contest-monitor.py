@@ -106,6 +106,11 @@ def monitor_cycle(last_msg,url_authToken=None):
     
     json_object = requests.get(url_json_object);
 
+    if 'data' not in json_object.json():
+        print_log('No data in json, sleep 5 seconds...')
+        time.sleep(randint(5, 8))
+        return
+                
     msg     = json_object.json()['data'][0]['message']
     link    = ''
     if 'link' in json_object.json()['data'][0]:
