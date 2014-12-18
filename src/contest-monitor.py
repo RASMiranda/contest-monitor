@@ -153,7 +153,7 @@ if __name__ == "__main__":
             excep = traceback.format_exception(*sys.exc_info())
             excep = '\n'.join(excep)
             print_log('(Exception) : '+excep)
-            #"""
+            """
             send_mail(
                 config.error_mail,
                 config.error_mail,
@@ -162,7 +162,7 @@ if __name__ == "__main__":
                 config.error_mail_smtp_srv,
                 config.error_mail,
                 config.error_mail_smtp_pwd)
-            #"""
+            """
             #raise e
             continue
 
