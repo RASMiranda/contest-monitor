@@ -107,6 +107,7 @@ def monitor_cycle(last_msg,url_authToken=None):
     json_object = requests.get(url_json_object);
 
     if 'data' not in json_object.json():
+        print_log(json_object.json())
         print_log('No data in json, sleep 5 seconds...')
         time.sleep(randint(5, 8))
         return
@@ -133,7 +134,7 @@ def monitor_cycle(last_msg,url_authToken=None):
            not sameMessage(last_msg, msg, participant['mail']):
             participate(participant)
         last_msg[participant['mail']] = msg
-    time.sleep(randint(1, 3))
+    time.sleep(randint(config.sleep_req_min, config.sleep_req_max))
 #_______________________________________________________________________________
 
 if __name__ == "__main__":      

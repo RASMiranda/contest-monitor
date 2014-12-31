@@ -4,6 +4,9 @@
 """
 #_______________________________________________________________________________
 
+sleep_req_min = 2
+sleep_req_max = 5
+
 participants = [
     dict(
         mail            = 'yourmail@gmail.com',
