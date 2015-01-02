@@ -133,7 +133,8 @@ def monitor_cycle(last_msg,url_authToken=None):
         if config.keyword_uc in msg.upper() and \
            not sameMessage(last_msg, msg, participant['mail']):
             participate(participant)
-        last_msg[participant['mail']] = msg
+        if(participant['mail'] and last_msg and msg):
+            last_msg[participant['mail']] = msg
     time.sleep(randint(config.sleep_req_min, config.sleep_req_max))
 #_______________________________________________________________________________
 
