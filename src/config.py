@@ -35,9 +35,10 @@ auth_url                = 'https://graph.facebook.com/oauth/access_token?grant_t
 auth_app_id             = 'app-id'
 auth_app_secret         = 'app-secret'
 keyword_uc              = 'CONTEST'
+first_subject_separator = 'subject "'
+last_subject_separator  = '"'
 
 mail_destination    = 'constestmail@com.pt'
-mail_subject        = 'CONTEST-NEXTWD3'
 mail_body           = """
 CONTEST SOMETHING
 Name: name

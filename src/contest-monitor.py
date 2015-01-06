@@ -22,23 +22,18 @@ def send_mail(from_add_r, to_add, subject, body, smtp, smtp_usr, smtp_pwd):
     s.sendmail(from_add_r, to_add, msg.as_string())
     s.quit()
 
-def next_weekday(d, weekday):
-    days_ahead = weekday - d.weekday()
-    if days_ahead < 0: # Target day already happened this week
-        days_ahead += 7
-    return d + datetime.timedelta(days_ahead)
-
 def fetchUrl(url):
     f = urllib.request.urlopen(url)
     return f.read()
 
-def get_nextwd(wd):
-    d                   = datetime.datetime.now()
-    next_thursday       = next_weekday(d, 3) # 0 = Monday, 1=Tuesday, 2=Wednesday...
-    next_thursday_day   = next_thursday.strftime('%d').lstrip('0')
-    next_thursday_month = next_thursday.strftime('%m').lstrip('0')
-    return next_thursday_day + '/' + next_thursday_month
-
+def find_between( s, first, last ):
+    try:
+        start = s.index( first ) + len( first )
+        end = s.index( last, start )
+        return s[start:end]
+    except ValueError:
+        return ""
+    
 def isWinner(msg, name):
     nameArr = name.split(' ')
     return nameArr[0] in msg and nameArr[-1] in msg
@@ -53,10 +48,13 @@ def sameMessage(last_msg, msg, mail):
                 return True
     return False
 
-def participate(participant):
-    subject = config.mail_subject
-    if 'NEXTWD' in subject:
-        subject = subject[:-7]+get_nextwd(subject[-1:])
+def get_subject(msg):
+    first_subject_separator = config.first_subject_separator
+    last_subject_separator = config.last_subject_separator
+    return find_between(msg, first_subject_separator, last_subject_separator)
+
+def participate(participant, msg):
+    subject = get_subject(msg)
     mail_body = config.mail_body\
                     .replace('name', participant['name'])\
                     .replace('idNum', participant['idNum'])\
@@ -132,9 +130,8 @@ def monitor_cycle(last_msg,url_authToken=None):
             print_log('Sent winner mail to '+participant['mail'])
         if config.keyword_uc in msg.upper() and \
            not sameMessage(last_msg, msg, participant['mail']):
-            participate(participant)
-        if(participant['mail'] and last_msg and msg):
-            last_msg[participant['mail']] = msg
+            participate(participant, msg)
+        last_msg[participant['mail']] = msg
     time.sleep(randint(config.sleep_req_min, config.sleep_req_max))
 #_______________________________________________________________________________
 
