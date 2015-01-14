@@ -6,6 +6,7 @@
 
 sleep_req_min = 2
 sleep_req_max = 5
+SMTPServerDisconnected_sleep_secs = 70
 
 participants = [
     dict(
