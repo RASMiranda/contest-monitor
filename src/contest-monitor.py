@@ -12,15 +12,20 @@ import config
 #_______________________________________________________________________________
 
 def send_mail(from_add_r, to_add, subject, body, smtp, smtp_usr, smtp_pwd):
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = from_add_r
-    msg['To'] = to_add
-    s = smtplib.SMTP(smtp)
-    s.starttls()
-    s.login(smtp_usr, smtp_pwd)
-    s.sendmail(from_add_r, to_add, msg.as_string())
-    s.quit()
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = from_add_r
+        msg['To'] = to_add
+        s = smtplib.SMTP(smtp)
+        s.starttls()
+        s.login(smtp_usr, smtp_pwd)
+        s.sendmail(from_add_r, to_add, msg.as_string())
+        s.quit()
+    except smtplib.SMTPServerDisconnected as e:
+        print_log('smtplib.SMTPServerDisconnected Exception')
+        print_log('Sleeping '+str(config.SMTPServerDisconnected_sleep_secs)+' seconds')
+        time.sleep(config.SMTPServerDisconnected_sleep_secs)        
 
 def fetchUrl(url):
     f = urllib.request.urlopen(url)
@@ -104,9 +109,9 @@ def monitor_cycle(last_msg,url_authToken=None):
     
     json_object = requests.get(url_json_object);
 
-    if 'data' not in json_object.json():
+    if 'data' not in json_object.json() or 'message' not in json_object.json()['data'][0]:
         print(json_object.json())
-        print_log('No data in json, sleep 5 seconds...')
+        print_log('No data message in json, sleep 5 seconds...')
         time.sleep(randint(5, 8))
         return
                 
@@ -148,21 +153,10 @@ if __name__ == "__main__":
         try:
             monitor_cycle(last_msg,url_authToken)
         except Exception as e:
-            last_msg = None
+            last_msg = dict()
             excep = traceback.format_exception(*sys.exc_info())
             excep = '\n'.join(excep)
             print_log('(Exception) : '+excep)
-            """
-            send_mail(
-                config.error_mail,
-                config.error_mail,
-                'Exception '+config.keyword_uc,
-                excep,
-                config.error_mail_smtp_srv,
-                config.error_mail,
-                config.error_mail_smtp_pwd)
-            """
-            #raise e
             continue
 
     print_log("This should not have ended!")
