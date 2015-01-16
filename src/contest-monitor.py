@@ -157,6 +157,9 @@ if __name__ == "__main__":
             excep = traceback.format_exception(*sys.exc_info())
             excep = '\n'.join(excep)
             print_log('(Exception) : '+excep)
+            print_log('Sleep 5 seconds...')
+            time.sleep(randint(5, 8))
+            print_log('And we are up and running!')
             continue
 
     print_log("This should not have ended!")
